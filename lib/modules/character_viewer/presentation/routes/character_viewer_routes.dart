@@ -6,10 +6,10 @@ import 'package:simpsons_character_viewer/app/service_locator/service_locator.da
 import 'package:simpsons_character_viewer/modules/character_viewer/data/characters_data_source.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/data/characters_detail_data_source.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/search/character_searchable.dart';
-import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/character_detail_cubit.dart';
-import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list_cubit.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/character_detail/character_detail_cubit.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list/characters_list_cubit.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/character_detail_page.dart';
-import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/character_search_page.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/characters_list_page.dart';
 
 import 'character_detail_arguments.dart';
 
@@ -22,15 +22,16 @@ class CharacterViewerRoutes {
     return [
       GoRoute(
         path: characterSearch,
-        builder: (context, routerState) => BlocProvider<CharactersListCubit>(
-          create: (BuildContext context) {
-            return CharactersListCubit(
-              charactersDataSource: CharactersDataSourceImpl(getIt<Dio>()),
-              characterSearchable: CharacterSearchableImpl(),
-            );
-          },
-          child: const CharacterSearchPage(),
-        ),
+        builder: (context, routerState) =>
+            BlocProvider<CharactersListCubit>(
+              create: (BuildContext context) {
+                return CharactersListCubit(
+                  charactersDataSource: CharactersDataSourceImpl(getIt<Dio>()),
+                  characterSearchable: CharacterSearchableImpl(),
+                );
+              },
+              child: const CharactersListPage(),
+            ),
       ),
       GoRoute(
         path: characterDetail,
@@ -40,15 +41,16 @@ class CharacterViewerRoutes {
 
           final arguments = routerState.extra as CharacterDetailArguments;
 
-          return BlocProvider<CharacterDetailCubit>(
-            create: (BuildContext context) => CharacterDetailCubit(
+          final cubit = CharacterDetailCubit(
               characterDetailDataSource: CharacterDetailDataSourceImpl(
                 getIt<Dio>(),
                 localDataSource: getIt<CharacterDetailsLocalDataSource>(),
-              ),
-              arguments: arguments,
-            ),
-            child: const CharacterDetailPage(),
+              )
+          );
+
+          return BlocProvider<CharacterDetailCubit>(
+            create: (BuildContext context) => cubit,
+            child: CharacterDetailPage(arguments: arguments, cubit: cubit),
           );
         },
       )

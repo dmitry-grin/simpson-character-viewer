@@ -1,13 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/character_detail_cubit.dart';
+import 'package:simpsons_character_viewer/app/presentation/text_theme_extension.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/character_detail/character_detail_cubit.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/character_detail/character_detail_state.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/widgets/default_error_widget.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/widgets/loading_widget.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/widgets/text_highlight_widget.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/routes/character_detail_arguments.dart';
 
 class CharacterDetailPage extends StatefulWidget {
-  const CharacterDetailPage({super.key});
+  const CharacterDetailPage({
+    super.key,
+    required this.arguments,
+    required this.cubit,
+  });
+
+  final CharacterDetailArguments arguments;
+  final CharacterDetailCubit cubit;
 
   @override
   State<CharacterDetailPage> createState() => _CharacterDetailPageState();
@@ -18,7 +28,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
   void initState() {
     super.initState();
 
-    context.read<CharacterDetailCubit>().loadImage();
+    widget.cubit.loadImageFor(character: widget.arguments.character);
   }
 
   @override
@@ -28,18 +38,14 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
         middle: Text('Character'),
       ),
       body: SafeArea(
-        child: BlocBuilder<CharacterDetailCubit, CharacterDetailState>(builder: (context, state) {
-          if (state is CharacterDetailLoading) {
-            return const LoadingWidget();
-          } else if (state is CharacterDetailError) {
-            return DefaultErrorWidget(
-              onRetry: context.read<CharacterDetailCubit>().loadImage,
-            );
-          } else if (state is CharacterDetailLoaded) {
-            return _LoadedBody(state: state);
-          }
-        
-          return const SizedBox.shrink();
+        child: BlocBuilder<CharacterDetailCubit, CharactersDetailState>(builder: (context, state) {
+          return state.map(
+            loading: (_) => const LoadingWidget(),
+            loaded: (loadedState) => _LoadedBody(state: loadedState, arguments: widget.arguments),
+            error: (_) => DefaultErrorWidget(
+              onRetry: () => widget.cubit.loadImageFor(character: widget.arguments.character),
+            ),
+          );
         }),
       ),
     );
@@ -49,9 +55,11 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
 class _LoadedBody extends StatelessWidget {
   const _LoadedBody({
     required this.state,
+    required this.arguments,
   });
 
-  final CharacterDetailLoaded state;
+  final DetailLoaded state;
+  final CharacterDetailArguments arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +73,12 @@ class _LoadedBody extends StatelessWidget {
             const SizedBox(height: 32),
             image,
             const SizedBox(height: 32),
-            Text(state.arguments.character.name, style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
+            Text(arguments.character.name, style: context.textStyles.titleLarge),
             const SizedBox(height: 16),
             TextHighlightWidget(
-              baseText: state.arguments.character.text,
-              searcherText: state.arguments.searchTerm ?? '',
-              textStyle: const TextStyle(fontSize: 16),
+              baseText: arguments.character.description,
+              searcherText: arguments.searchTerm ?? '',
+              textStyle: context.textStyles.title,
             ),
           ],
         ),

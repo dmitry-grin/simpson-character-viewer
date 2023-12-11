@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list_cubit.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list/characters_list_cubit.dart';
 
 
 class SliverSearchField extends SliverPersistentHeaderDelegate {

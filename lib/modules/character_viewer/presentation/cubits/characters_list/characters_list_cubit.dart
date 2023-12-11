@@ -4,7 +4,7 @@ import 'package:simpsons_character_viewer/modules/character_viewer/data/characte
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/entities/character.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/search/character_searchable.dart';
 
-part 'characters_list_state.dart';
+import 'characters_list_state.dart';
 
 class CharactersListCubit extends Cubit<CharactersListState> {
   CharactersListCubit({
@@ -12,35 +12,38 @@ class CharactersListCubit extends Cubit<CharactersListState> {
     required CharacterSearchable characterSearchable,
   })  : _charactersDataSource = charactersDataSource,
         _characterSearchable = characterSearchable,
-        super(CharactersListInitial());
+        super(const CharactersListState.loading());
 
   final CharactersDataSource _charactersDataSource;
   final CharacterSearchable _characterSearchable;
 
   void fetchCharacters() async {
-    emit(CharactersListLoading());
+    emit(const CharactersListState.loading());
 
     final result = await _charactersDataSource.fetchCharacters();
 
     switch (result) {
-      case Success(value: final characters):
-        emit(CharactersListLoaded(characters));
+      case Success(value: final charactersDto):
+        final characters = charactersDto.map((e) => Character.from(e)).toList();
+        emit(CharactersListState.loaded(allCharacters: characters));
       case Failure(exception: _):
-        emit(CharactersListError());
+        emit(const CharactersListState.error());
     }
   }
 
   void search({required String term}) {
-    if (state is CharactersListLoaded) {
-      final currentState = state as CharactersListLoaded;
+    if (state is Loaded) {
+      final currentState = state as Loaded;
 
       final filteredCharacters = currentState.allCharacters.where(
-            (character) => _characterSearchable.search(character, term),
-          ).toList();
+        (character) {
+          return _characterSearchable.search(character, term);
+        },
+      ).toList();
 
       emit(
-        CharactersListLoaded(
-          currentState.allCharacters,
+        CharactersListState.loaded(
+          allCharacters: currentState.allCharacters,
           filteredCharacters: filteredCharacters,
           searchTerm: term,
         ),
@@ -49,13 +52,12 @@ class CharactersListCubit extends Cubit<CharactersListState> {
   }
 
   void cancelSearch() {
-    if (state is CharactersListLoaded) {
-      final currentState = state as CharactersListLoaded;
+    if (state is Loaded) {
+      final currentState = state as Loaded;
 
       emit(
-        CharactersListLoaded(
-          currentState.allCharacters,
-          filteredCharacters: [],
+        CharactersListState.loaded(
+          allCharacters: currentState.allCharacters,
         ),
       );
     }

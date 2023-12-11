@@ -11,9 +11,9 @@ abstract class CharacterDetailDataSource {
 class CharacterDetailDataSourceImpl implements CharacterDetailDataSource {
   CharacterDetailDataSourceImpl(
     Dio dio, {
-    RamStorage? localDataSource,
+    required RamStorage localDataSource,
   })  : _client = dio,
-        _localDataSource = localDataSource ?? CharacterDetailsLocalDataSource();
+        _localDataSource = localDataSource;
 
   final Dio _client;
   final RamStorage _localDataSource;

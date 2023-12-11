@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list_cubit.dart';
+import 'package:simpsons_character_viewer/app/presentation/text_theme_extension.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list/characters_list_cubit.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list/characters_list_state.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/widgets/default_error_widget.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/widgets/loading_widget.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/widgets/sliver_search_field.dart';
@@ -10,14 +12,14 @@ import 'package:simpsons_character_viewer/modules/character_viewer/presentation/
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/routes/character_detail_arguments.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/routes/character_viewer_routes.dart';
 
-class CharacterSearchPage extends StatefulWidget {
-  const CharacterSearchPage({super.key});
+class CharactersListPage extends StatefulWidget {
+  const CharactersListPage({super.key});
 
   @override
-  State<CharacterSearchPage> createState() => _CharacterSearchPageState();
+  State<CharactersListPage> createState() => _CharactersListPageState();
 }
 
-class _CharacterSearchPageState extends State<CharacterSearchPage> {
+class _CharactersListPageState extends State<CharactersListPage> {
   late final TextEditingController textEditingController;
 
   @override
@@ -40,19 +42,14 @@ class _CharacterSearchPageState extends State<CharacterSearchPage> {
       backgroundColor: CupertinoTheme.of(context).barBackgroundColor.withOpacity(1),
       body: SafeArea(
         child: BlocBuilder<CharactersListCubit, CharactersListState>(
-          builder: (context, state) {
-            if (state is CharactersListLoading) {
-              return const LoadingWidget();
-            } else if (state is CharactersListLoaded) {
-              return _LoadedBody(state: state, controller: textEditingController);
-            } else if (state is CharactersListError) {
-              return DefaultErrorWidget(
-                onRetry: context.read<CharactersListCubit>().fetchCharacters,
-              );
-            }
-
-            return const SizedBox.shrink();
-          },
+          builder: (context, state) => state.map(
+            loading: (_) => const LoadingWidget(),
+            error: (_) => DefaultErrorWidget(onRetry: context.read<CharactersListCubit>().fetchCharacters),
+            loaded: (loadedState) => _LoadedBody(
+              state: loadedState,
+              controller: textEditingController,
+            ),
+          ),
         ),
       ),
     );
@@ -62,7 +59,7 @@ class _CharacterSearchPageState extends State<CharacterSearchPage> {
 class _LoadedBody extends StatelessWidget {
   const _LoadedBody({required this.state, required this.controller});
 
-  final CharactersListLoaded state;
+  final Loaded state;
   final TextEditingController controller;
 
   @override
@@ -82,13 +79,13 @@ class _LoadedBody extends StatelessWidget {
           pinned: true,
         ),
         if (noItemsFound) ...[
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.only(top: 16.0),
+              padding: const EdgeInsets.only(top: 16.0),
               child: Text(
-                'No Simpsons found, correct terms',
+                'No Simpsons found, please correct terms',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
+                style: context.textStyles.title,
               ),
             ),
           ),
@@ -99,7 +96,7 @@ class _LoadedBody extends StatelessWidget {
                 title: TextHighlightWidget(
                   baseText: items[index].name,
                   searcherText: state.searchTerm ?? '',
-                  textStyle: const TextStyle(fontSize: 16),
+                  textStyle: context.textStyles.title,
                 ),
                 onTap: () => context.pushNamed(
                   CharacterViewerRoutes.characterDetailName,

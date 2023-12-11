@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:simpsons_character_viewer/app/network/result.dart';
-import 'package:simpsons_character_viewer/modules/character_viewer/domain/entities/character.dart';
+import 'package:simpsons_character_viewer/modules/character_viewer/domain/entities/character_dto.dart';
 
 abstract class CharactersDataSource {
-  Future<Result<List<Character>, Exception>> fetchCharacters();
+  Future<Result<List<CharacterDto>, Exception>> fetchCharacters();
 }
 
 class CharactersDataSourceImpl implements CharactersDataSource {
@@ -16,7 +16,7 @@ class CharactersDataSourceImpl implements CharactersDataSource {
   static const _path = '?q=simpsons+characters&format=json';
 
   @override
-  Future<Result<List<Character>, Exception>> fetchCharacters() async {
+  Future<Result<List<CharacterDto>, Exception>> fetchCharacters() async {
     try {
       final response = await client.get(_path);
 
@@ -25,7 +25,7 @@ class CharactersDataSourceImpl implements CharactersDataSource {
 
           final Map<String, dynamic> data = jsonDecode(response.data);
           final List<dynamic> relatedTopics = data['RelatedTopics'];
-          List<Character> characters = relatedTopics.map((json) => Character.fromJson(json)).toList();
+          List<CharacterDto> characters = relatedTopics.map((json) => CharacterDto.fromJson(json)).toList();
 
           return Success(characters);
 
