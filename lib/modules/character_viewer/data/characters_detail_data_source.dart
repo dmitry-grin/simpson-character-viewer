@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:simpsons_character_viewer/app/data/network/result.dart';
 import 'package:simpsons_character_viewer/app/data/ram_storage.dart';
-import 'package:simpsons_character_viewer/app/network/result.dart';
 
 abstract class CharacterDetailDataSource {
   Future<Result<Uint8List, Exception>> loadImage(String path);

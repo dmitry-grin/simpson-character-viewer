@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:simpsons_character_viewer/app/network/result.dart';
+import 'package:simpsons_character_viewer/app/data/network/result.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/data/characters_detail_data_source.dart';
 
 main() {

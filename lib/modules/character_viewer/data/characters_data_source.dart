@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:simpsons_character_viewer/app/network/result.dart';
+import 'package:simpsons_character_viewer/app/data/network/result.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/entities/character_dto.dart';
 
 abstract class CharactersDataSource {

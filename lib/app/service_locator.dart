@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:simpsons_character_viewer/app/factory/dio_factory.dart';
-import 'package:simpsons_character_viewer/app/network/network_config.dart';
+import 'package:simpsons_character_viewer/app/data/network/network_config.dart';
+import 'package:simpsons_character_viewer/app/domain/factory/dio_factory.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/data/characters_detail_data_source.dart';
 
 final getIt = GetIt.instance;

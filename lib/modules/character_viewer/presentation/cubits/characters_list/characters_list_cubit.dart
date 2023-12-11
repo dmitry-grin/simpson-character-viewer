@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpsons_character_viewer/app/network/result.dart';
+import 'package:simpsons_character_viewer/app/data/network/result.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/data/characters_data_source.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/entities/character.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/search/character_searchable.dart';

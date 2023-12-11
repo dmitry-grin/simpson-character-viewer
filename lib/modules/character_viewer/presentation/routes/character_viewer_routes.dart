@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simpsons_character_viewer/app/service_locator/service_locator.dart';
+import 'package:simpsons_character_viewer/app/service_locator.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/data/characters_data_source.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/data/characters_detail_data_source.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/search/character_searchable.dart';

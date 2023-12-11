@@ -1,5 +1,5 @@
-import 'package:simpsons_character_viewer/app/interface/accessor.dart';
-import 'package:simpsons_character_viewer/app/interface/searchable.dart';
+import 'package:simpsons_character_viewer/app/domain/interface/accessor.dart';
+import 'package:simpsons_character_viewer/app/domain/interface/searchable.dart';
 
 abstract class CharacterSearchable implements Searchable {
   @override

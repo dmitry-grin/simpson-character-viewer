@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simpsons_character_viewer/app/presentation/text_theme_extension.dart';
+import 'package:simpsons_character_viewer/app/presentation/theme/text_theme_extension.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list/characters_list_cubit.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/cubits/characters_list/characters_list_state.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/presentation/pages/widgets/default_error_widget.dart';

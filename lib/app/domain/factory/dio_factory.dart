@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:simpsons_character_viewer/app/factory/object_factory.dart';
-import 'package:simpsons_character_viewer/app/network/network_config.dart';
+import 'package:simpsons_character_viewer/app/data/network/network_config.dart';
+import 'package:simpsons_character_viewer/app/domain/factory/object_factory.dart';
 
 class DioFactory implements ObjectFactory<Dio> {
   @override
