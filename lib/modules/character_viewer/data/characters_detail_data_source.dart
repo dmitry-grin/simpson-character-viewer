@@ -4,7 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:simpsons_character_viewer/app/data/network/result.dart';
 import 'package:simpsons_character_viewer/app/data/ram_storage.dart';
 
+/// An abstract class defining a data source for loading character images.
 abstract class CharacterDetailDataSource {
+  /// Loads an image from the specified [path].
+  ///
+  /// Returns a [Result] containing a [Uint8List] on success, or an [Exception] on failure.
   Future<Result<Uint8List, Exception>> loadImage(String path);
 }
 

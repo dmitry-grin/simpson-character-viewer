@@ -1,6 +1,7 @@
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/entities/character_dto.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/search/character_searchable.dart';
 
+/// Represents individual Simpson character with name, description, and URL information.
 class Character implements CharacterAccessor {
   @override
   final String name;

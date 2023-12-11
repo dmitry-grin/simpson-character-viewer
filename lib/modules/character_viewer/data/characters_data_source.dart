@@ -4,7 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:simpsons_character_viewer/app/data/network/result.dart';
 import 'package:simpsons_character_viewer/modules/character_viewer/domain/entities/character_dto.dart';
 
+/// An abstract class defining a data source for fetching characters.
 abstract class CharactersDataSource {
+  /// Fetches a list of character data.
+  ///
+  /// Returns a [Result] containing a list of [CharacterDto] on success,
+  /// or an [Exception] on failure.
   Future<Result<List<CharacterDto>, Exception>> fetchCharacters();
 }
 
