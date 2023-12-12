@@ -73,7 +73,7 @@ class _LoadedBody extends StatelessWidget {
             const SizedBox(height: 32),
             image,
             const SizedBox(height: 32),
-            Text(arguments.character.name, style: context.textStyles.titleLarge),
+            Text(arguments.character.name, style: context.textStyles.largeTitle),
             const SizedBox(height: 16),
             TextHighlightWidget(
               baseText: arguments.character.description,

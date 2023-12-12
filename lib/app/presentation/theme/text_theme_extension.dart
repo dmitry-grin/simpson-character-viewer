@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 extension CustomStyles on TextTheme {
-  TextStyle get titleLarge => const TextStyle(
+  TextStyle get largeTitle => const TextStyle(
     fontSize: 34,
     fontWeight: FontWeight.bold,
   );

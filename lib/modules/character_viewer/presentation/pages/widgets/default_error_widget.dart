@@ -9,6 +9,7 @@ class DefaultErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
             "D'oh, something went wrong :(",
